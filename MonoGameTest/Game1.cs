@@ -168,7 +168,10 @@ namespace MonoGameTest
             if (sokoban.IsOver)
             {
                 spriteBatch.DrawString(textBlock, "We won!", new Vector2(200, 200), Color.Black);
-                GetNewLevel();
+                if (currentGame <= levelManager.NumberOfLevels)
+                {
+                    GetNewLevel();
+                }
             }
             spriteBatch.DrawString(textBlock, $"Step count: {counter.Count.ToString()}", new Vector2(100, 50), Color.Black);
             spriteBatch.DrawString(textBlock,
