@@ -15,13 +15,19 @@ namespace MonoGameTest.Metrics
 
         public StepsCounter(Sokoban game)
         {
-            game.OnTurn += Update;
+            game.OnTurn += StepForward;
+            game.RevertTurnEvent += StepBack;
             count = 0;
         }
 
-        public void Update()
+        public void StepForward()
         {
             count++;
+        }
+
+        public void StepBack()
+        {
+            count--;
         }
     }
 }
