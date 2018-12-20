@@ -18,24 +18,8 @@ namespace MonoGameTest
 
         SpriteBatch spriteBatch;
 
-        Vector2 heroPosition = Vector2.Zero;
-
-        private static string map = @"
-WWWWWWWE
-WEEEEEWE
-WTTEEEEW
-WPBEBEWW
-WWWWWWWW";
 
         private string currentMap;
-
-        private static string crossMap = @"
-EEEWEEE
-EEWPWEE
-EWBETWE
-EEWEWEE
-EEEWEEE";
-
         private StepsCounter counter;
 
         LevelManager levelManager = new LevelManager();
@@ -83,7 +67,6 @@ EEEWEEE";
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             texture = Content.Load<Texture2D>("Nier");
             wall = Content.Load<Texture2D>("wall_2");
