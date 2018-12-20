@@ -39,10 +39,8 @@ EEEWEEE";
         LevelManager levelManager = new LevelManager();
 
         private Sokoban sokoban;
-        //static Sokoban sokoban = new Sokoban(MapCreator.CreateMap(map));
-
-
         int pictureSize = 28;
+
         Texture2D texture;
         Texture2D wall;
         Texture2D box;
@@ -140,34 +138,18 @@ EEEWEEE";
         {
             GraphicsDevice.Clear(Color.White);
             var startPosition = Vector2.Zero;
-            var rows = map.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var rows = map.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries); 
             var length = rows[0].Length;
             var centerPoint = new Vector2(
                 (Window.ClientBounds.Width / 2) - (pictureSize / 2),
                 (Window.ClientBounds.Height / 2) - (pictureSize / 2));
 
-            if (length % 2 == 0)
-            {
-                startPosition.X = centerPoint.X - length / 2 * pictureSize;
-            }
-            else
-            {
-                startPosition.X = centerPoint.X - (int)Math.Ceiling(length / 2.0) * pictureSize;
-            }
-
             var width = rows.Length;
 
-            if (width % 2 != 0)
-            {
-                startPosition.Y = centerPoint.Y - (int) Math.Ceiling(width / 2.0) * pictureSize;
-            }
-            else
-            {
-                startPosition.Y = centerPoint.Y - length / 2 * pictureSize;
-            }
+            startPosition.X = FindStartPositionInOneDimension(length, centerPoint.X);
+            startPosition.Y = FindStartPositionInOneDimension(width, centerPoint.Y);
 
             var startX = startPosition.X;
-
             spriteBatch.Begin();
 
             foreach (var row in rows)
@@ -200,8 +182,7 @@ EEEWEEE";
             if (sokoban.IsOver)
             {
                 spriteBatch.DrawString(textBlock, "We won!", new Vector2(200, 200), Color.Black);
-                currentGame++;
-                sokoban = levelManager.GetGame(currentGame);
+                GetNewLevel();
             }
             spriteBatch.DrawString(textBlock, $"Step count: {counter.Count.ToString()}", new Vector2(100, 50), Color.Black);
             spriteBatch.DrawString(textBlock,
@@ -211,6 +192,28 @@ EEEWEEE";
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private float FindStartPositionInOneDimension(int length, float centerPoint)
+        {
+            float result;
+            if (length % 2 == 0)
+            {
+                result = centerPoint - length / 2 * pictureSize;
+            }
+            else
+            {
+                result = centerPoint - (int)Math.Ceiling(length / 2.0) * pictureSize;
+            }
+
+            return result;
+        }
+
+        private void GetNewLevel()
+        {
+            currentGame++;
+            sokoban = levelManager.GetGame(currentGame);
+            counter = new StepsCounter(sokoban);
         }
     }
 }
