@@ -27,6 +27,8 @@ WTTEEEEW
 WPBEBEWW
 WWWWWWWW";
 
+        private string currentMap;
+
         private static string crossMap = @"
 EEEWEEE
 EEWPWEE
@@ -37,8 +39,9 @@ EEEWEEE";
         private StepsCounter counter;
 
         LevelManager levelManager = new LevelManager();
-
         private Sokoban sokoban;
+        private Adapter adapter;
+
         int pictureSize = 28;
 
         Texture2D texture;
@@ -46,7 +49,7 @@ EEEWEEE";
         Texture2D box;
         Texture2D xMark;
 
-        private int currentGame;
+        private int currentGame = 1;
         private double interval = 10;
         private double elapsedTime;
 
@@ -66,9 +69,10 @@ EEEWEEE";
         /// </summary>
         protected override void Initialize()
         {
-            sokoban = levelManager.GetGame(1);
+            sokoban = levelManager.GetGame(currentGame);
             counter = new StepsCounter(sokoban);
-            currentGame = 1;
+            adapter = new Adapter(sokoban.Map);
+            currentMap = adapter.Map;
 
             base.Initialize();
         }
@@ -121,9 +125,8 @@ EEEWEEE";
                 if (keyboardState.IsKeyDown(Keys.R))
                     sokoban.RevertTurn();
 
-                var adapter = new Adapter(sokoban.Map);
-                var newMap = adapter.Map;
-                map = newMap;
+                adapter.ConvertToString(sokoban.Map);
+                currentMap = adapter.Map;
                 elapsedTime = 0;
             }
             elapsedTime += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -138,7 +141,7 @@ EEEWEEE";
         {
             GraphicsDevice.Clear(Color.White);
             var startPosition = Vector2.Zero;
-            var rows = map.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries); 
+            var rows = currentMap.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries); 
             var length = rows[0].Length;
             var centerPoint = new Vector2(
                 (Window.ClientBounds.Width / 2) - (pictureSize / 2),

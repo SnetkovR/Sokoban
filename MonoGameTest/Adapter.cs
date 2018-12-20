@@ -19,7 +19,7 @@ namespace MonoGameTest
             ConvertToString(map);
         }
 
-        private void ConvertToString(Cell[,] map)
+        public void ConvertToString(Cell[,] map)
         {
             var builder = new StringBuilder();
             var len = map.GetLength(0);
