@@ -50,6 +50,7 @@
     <Compile Include="Interfeces\ICreature.cs" />
     <Compile Include="Interfeces\INavigator.cs" />
     <Compile Include="Interfeces\IObject.cs" />
+    <Compile Include="LevelManager.cs" />
     <Compile Include="MapCreator.cs" />
     <Compile Include="Metrics\StepsCounter.cs" />
     <Compile Include="Movement.cs" />
@@ -70,6 +71,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <Content Include="Levels\Level1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Levels\Level2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />

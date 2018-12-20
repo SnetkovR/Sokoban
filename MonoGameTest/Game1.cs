@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Exam;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,9 +34,13 @@ EWBETWE
 EEWEWEE
 EEEWEEE";
 
-        static Sokoban sokoban = new Sokoban(MapCreator.CreateMap(map));
+        private StepsCounter counter;
 
-        StepsCounter counter = new StepsCounter(sokoban);
+        LevelManager levelManager = new LevelManager();
+
+        private Sokoban sokoban;
+        //static Sokoban sokoban = new Sokoban(MapCreator.CreateMap(map));
+
 
         int pictureSize = 28;
         Texture2D texture;
@@ -42,12 +48,11 @@ EEEWEEE";
         Texture2D box;
         Texture2D xMark;
 
+        private int currentGame;
         private double interval = 10;
         private double elapsedTime;
 
         SpriteFont textBlock;
-
-        Vector2 position = Vector2.Zero;
 
         public Game1()
         {
@@ -63,7 +68,9 @@ EEEWEEE";
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            sokoban = levelManager.GetGame(1);
+            counter = new StepsCounter(sokoban);
+            currentGame = 1;
 
             base.Initialize();
         }
@@ -99,6 +106,7 @@ EEEWEEE";
         protected override void Update(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
+            
             if (elapsedTime > 64)
             {
                 if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -191,7 +199,9 @@ EEEWEEE";
 
             if (sokoban.IsOver)
             {
-                spriteBatch.DrawString(textBlock, "WE WON", new Vector2(200, 200), Color.Black);
+                spriteBatch.DrawString(textBlock, "We won!", new Vector2(200, 200), Color.Black);
+                currentGame++;
+                sokoban = levelManager.GetGame(currentGame);
             }
             spriteBatch.DrawString(textBlock, $"Step count: {counter.Count.ToString()}", new Vector2(100, 50), Color.Black);
             spriteBatch.DrawString(textBlock,

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Exam
 {
@@ -30,7 +27,7 @@ namespace Exam
 
         public event RevertTurnEventHandler RevertTurnEvent;
 
-        // TODO event reverse + cvs + leveling
+        // TODO event leveling
 
         public bool IsOver
         {
@@ -129,8 +126,6 @@ namespace Exam
                 MoveObject(lastTurn.InnerRequest.NewPosition,
                     lastTurn.InnerRequest.OldPosition);
             }
-
-            
             RevertTurnEvent?.Invoke();
             return true;
         }
