@@ -49,7 +49,6 @@
     <Compile Include="Interfeces\ICell.cs" />
     <Compile Include="Interfeces\ICreature.cs" />
     <Compile Include="Interfeces\INavigator.cs" />
-    <Compile Include="Interfeces\IObject.cs" />
     <Compile Include="LevelManager.cs" />
     <Compile Include="MapCreator.cs" />
     <Compile Include="Metrics\StepsCounter.cs" />

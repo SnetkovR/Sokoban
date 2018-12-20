@@ -11,7 +11,6 @@ namespace Exam
         public static Cell[,] CreateMap(string map, string separator = "\r\n")
         {
             var rows = map.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
-            // Вероятно нужно проверить верность карты. Или нет :hm:
             var result = new Cell[rows.Length, rows[0].Length];
 
             for (var x = 0; x < rows.Length; x++)
@@ -66,7 +65,7 @@ namespace Exam
                 case "Wall":
                     return new Wall();
                 default:
-                    throw new Exception("Dunno");
+                    throw new Exception($"Wrong name {nameof(name)}");
             }
         }
 
