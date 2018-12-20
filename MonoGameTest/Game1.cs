@@ -22,7 +22,7 @@ namespace MonoGameTest
 WWWWWWWE
 WEEEEEWE
 WTTEEEEW
-WPBBEEWW
+WPBEBEWW
 WWWWWWWW";
 
         private static string crossMap = @"
@@ -32,7 +32,7 @@ EWBETWE
 EEWEWEE
 EEEWEEE";
 
-        static Sokoban sokoban = new Sokoban(MapCreator.CreateMap(crossMap));
+        static Sokoban sokoban = new Sokoban(MapCreator.CreateMap(map));
 
         StepsCounter counter = new StepsCounter(sokoban);
 
@@ -112,6 +112,8 @@ EEEWEEE";
                     sokoban.MakeTurn(Movement.Up);
                 if (keyboardState.IsKeyDown(Keys.Down))
                     sokoban.MakeTurn(Movement.Down);
+                if (keyboardState.IsKeyDown(Keys.R))
+                    sokoban.RevertTurn();
 
                 var adapter = new Adapter(sokoban.Map);
                 var newMap = adapter.Map;

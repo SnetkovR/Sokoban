@@ -17,5 +17,12 @@ namespace Exam
             this.X = x;
             this.Y = y;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Point)) return false;
+            var point = obj as Point;
+            return X == point.X && Y == point.Y;
+        }
     }
 }

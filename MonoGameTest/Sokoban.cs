@@ -20,9 +20,15 @@ namespace Exam
 
         private Point playerPosition;
 
+        private Stack<Resulter> turnsHistory;
+
         public delegate void MakeTurnEventHandler();
 
+        public delegate void RevertTurnEventHandler();
+
         public event MakeTurnEventHandler OnTurn;
+
+        public event RevertTurnEventHandler RevertTurnEvent;
 
         // TODO event reverse + cvs + leveling
 
@@ -60,7 +66,7 @@ namespace Exam
                             break;
                     }
 
-                    if (cell.IsTarget)
+                    if (cell.IsTarget && !targetCells.Contains(new Point(i, j)))
                     {
                         targetCells.Add(new Point(i, j));
                     }
@@ -77,6 +83,7 @@ namespace Exam
         {
             this.map = map;
             this.targetCells = new List<Point>();
+            turnsHistory = new Stack<Resulter>();
             FindGameObjects();
         }
 
@@ -90,7 +97,6 @@ namespace Exam
         public Resulter MakeTurn(Movement move)
         {
             var resulter = map[playerPosition.X, playerPosition.Y].OnCell.Act(this, playerPosition, move);
-
             if (resulter.IsSuccess)
             {
                 if (resulter.InnerRequest != null)
@@ -101,10 +107,32 @@ namespace Exam
 
                 this.playerPosition = resulter.NewPosition;
                 MoveObject(resulter.OldPosition, resulter.NewPosition);
+                turnsHistory.Push(resulter);
                 OnTurn?.Invoke();
             }
 
             return resulter;
+        }
+
+        public bool RevertTurn()
+        {
+            if (turnsHistory.Count == 0)
+            {
+                return false;
+            }
+            var lastTurn = turnsHistory.Pop();
+            this.playerPosition = lastTurn.OldPosition;
+            MoveObject(lastTurn.NewPosition, lastTurn.OldPosition);
+
+            if (lastTurn.InnerRequest != null)
+            {
+                MoveObject(lastTurn.InnerRequest.NewPosition,
+                    lastTurn.InnerRequest.OldPosition);
+            }
+
+            
+            RevertTurnEvent?.Invoke();
+            return true;
         }
 
         public ICreature GetInfoAboutCell(Point point)
